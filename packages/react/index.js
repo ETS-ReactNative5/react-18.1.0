@@ -31,21 +31,30 @@ export type ChildrenArray<+T> = $ReadOnlyArray<ChildrenArray<T>> | T;
 
 // Export all exports so that they're available in tests.
 // We can't use export * from in Flow for some reason.
+// 日常看代码先看有什么功能，再按功能去理解为什么这么实现就容易了
 export {
   __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+  // 用来配置做单元测试的
   act as unstable_act,
+  // 做高阶函数处理子元素的
   Children,
   Component,
+  // 虚拟元素
   Fragment,
+  // 配合onRender做性能分析
   Profiler,
   PureComponent,
+  // 严格模式
   StrictMode,
+  // 配置做懒加载 延迟加载
   Suspense,
+  // 解决suspense加载和显示顺序问题，见 https://17.reactjs.org/docs/concurrent-mode-patterns.html#suspenselist
   SuspenseList,
   cloneElement,
   createContext,
   createElement,
   createFactory,
+  // 创建外部的不可变数据源， 见  https://juejin.cn/post/7026210002042011655
   createMutableSource,
   createRef,
   createServerContext,
@@ -53,6 +62,7 @@ export {
   isValidElement,
   lazy,
   memo,
+  // Concurrent模式下的低优先级渲染    https://zhuanlan.zhihu.com/p/431569744
   startTransition,
   unstable_Cache,
   unstable_DebugTracingMode,
@@ -63,6 +73,7 @@ export {
   unstable_getCacheSignal,
   unstable_getCacheForType,
   unstable_useCacheRefresh,
+  // https://github.com/facebook/react/issues/4000
   useId,
   useCallback,
   useContext,
