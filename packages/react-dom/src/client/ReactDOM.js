@@ -159,6 +159,7 @@ function createRoot(
       );
     }
   }
+  // 创建渲染函数
   return createRootImpl(container, options);
 }
 

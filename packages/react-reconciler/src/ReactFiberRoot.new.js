@@ -130,11 +130,16 @@ function FiberRootNode(
 }
 
 export function createFiberRoot(
+  // 父级容器
   containerInfo: any,
+  // 渲染模式
   tag: RootTag,
+  // 是否注水 适用于服务端渲染
   hydrate: boolean,
+  // 初始化的子节点
   initialChildren: ReactNodeList,
   hydrationCallbacks: null | SuspenseHydrationCallbacks,
+  // 是否严格模式
   isStrictMode: boolean,
   concurrentUpdatesByDefaultOverride: null | boolean,
   // TODO: We have several of these arguments that are conceptually part of the
@@ -145,6 +150,7 @@ export function createFiberRoot(
   onRecoverableError: null | ((error: mixed) => void),
   transitionCallbacks: null | TransitionTracingCallbacks,
 ): FiberRoot {
+  // 创建fiberRoot
   const root: FiberRoot = (new FiberRootNode(
     containerInfo,
     tag,
@@ -152,6 +158,7 @@ export function createFiberRoot(
     identifierPrefix,
     onRecoverableError,
   ): any);
+  // 初始化配置
   if (enableSuspenseCallback) {
     root.hydrationCallbacks = hydrationCallbacks;
   }
@@ -162,6 +169,7 @@ export function createFiberRoot(
 
   // Cyclic construction. This cheats the type system right now because
   // stateNode is any.
+  // 创建双缓存关联
   const uninitializedFiber = createHostRootFiber(
     tag,
     isStrictMode,
@@ -169,7 +177,7 @@ export function createFiberRoot(
   );
   root.current = uninitializedFiber;
   uninitializedFiber.stateNode = root;
-
+  // 初始化缓存配置
   if (enableCache) {
     const initialCache = createCache();
     retainCache(initialCache);
@@ -201,8 +209,8 @@ export function createFiberRoot(
     };
     uninitializedFiber.memoizedState = initialState;
   }
-
+  // 初始化更新队列
   initializeUpdateQueue(uninitializedFiber);
-
+  // 返回fiberRoot
   return root;
 }

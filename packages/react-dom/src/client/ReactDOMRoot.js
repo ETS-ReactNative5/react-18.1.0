@@ -85,7 +85,10 @@ const defaultOnRecoverableError =
         console['error'](error);
       };
 
+// 构造函数
+// 随后定义render和unmount函数
 function ReactDOMRoot(internalRoot: FiberRoot) {
+  // 保存fiberRoot的引用
   this._internalRoot = internalRoot;
 }
 
@@ -131,6 +134,7 @@ ReactDOMHydrationRoot.prototype.render = ReactDOMRoot.prototype.render = functio
       }
     }
   }
+  // 更新子节点
   updateContainer(children, root, null, null);
 };
 
@@ -156,9 +160,11 @@ ReactDOMHydrationRoot.prototype.unmount = ReactDOMRoot.prototype.unmount = funct
         );
       }
     }
+    // 同步更新子节点
     flushSync(() => {
       updateContainer(null, root, null, null);
     });
+    // 移除fiberRootNode标记
     unmarkContainerAsRoot(container);
   }
 };
@@ -167,6 +173,7 @@ export function createRoot(
   container: Element | DocumentFragment,
   options?: CreateRootOptions,
 ): RootType {
+  // 检查父级容器节点
   if (!isValidContainer(container)) {
     throw new Error('createRoot(...): Target container is not a DOM element.');
   }
@@ -179,6 +186,7 @@ export function createRoot(
   let onRecoverableError = defaultOnRecoverableError;
   let transitionCallbacks = null;
 
+  // 标准化配置信息
   if (options !== null && options !== undefined) {
     if (__DEV__) {
       if ((options: any).hydrate) {
@@ -221,24 +229,30 @@ export function createRoot(
     }
   }
 
+  // 创建fiberRoot
   const root = createContainer(
+    // 父级容器
     container,
+    // 并发模式
     ConcurrentRoot,
     null,
+    // 是否严格模式
     isStrictMode,
     concurrentUpdatesByDefaultOverride,
     identifierPrefix,
     onRecoverableError,
     transitionCallbacks,
   );
+  // 指定fiberRoot
   markContainerAsRoot(root.current, container);
 
   const rootContainerElement: Document | Element | DocumentFragment =
     container.nodeType === COMMENT_NODE
       ? (container.parentNode: any)
       : container;
+      // 初始化事件监听器
   listenToAllSupportedEvents(rootContainerElement);
-
+  // 返回重写后的render和unmount函数
   return new ReactDOMRoot(root);
 }
 

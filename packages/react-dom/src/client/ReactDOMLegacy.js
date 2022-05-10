@@ -340,6 +340,7 @@ export function render(
       );
     }
   }
+  // 首次渲染
   return legacyRenderSubtreeIntoContainer(
     null,
     element,
